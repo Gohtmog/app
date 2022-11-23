@@ -23,7 +23,7 @@ public class utile {
 		} else if (liste.size() == 0) {
 			throw new Exception();
 		}
-
+    
 		else {
 			throw new Exception();
 		}
