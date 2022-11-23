@@ -1,7 +1,10 @@
 package com.inti;
 
 import java.util.List;
+/*
+la classe utile contient kles fonctions utiles
 
+*/
 public class utile {
 
 	public double calculMoy(List<Double> liste) throws Exception {

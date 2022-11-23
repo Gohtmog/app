@@ -10,13 +10,13 @@ pipeline {
         stage('Nettoyage') {
             steps {
                 // Get some code from a GitHub repository
-                git 'https://github.com/Gohtmog/app.git'
+                git 'https://github.com/formateur1/MavenTests.git'
 
                 // Run Maven on a Unix agent.
                 // sh "mvn -Dmaven.test.failure.ignore=true clean package"
 
                 // To run Maven on a Windows agent, use
-                 bat "mvn -Dmaven.test.failure.ignore=true clean"
+                bat "mvn -Dmaven.test.failure.ignore=true clean"
             }
 
             post {
@@ -28,9 +28,26 @@ pipeline {
             }
         }
         
-        stage('Install') {
+        stage('Test') {
             steps {
-                bat "mvn -Dmaven.test.failure.ignore=true install"
+                bat "mvn test"
+            }
+            
+            post {
+            
+		    failure {
+			    echo "Echec"
+			    mail to: "enseignant.formateur@protonmail.com",
+				subject: "Echec pipeline : ${currentBuild.fullDisplayName}",
+				body: "Erreur dans le build : ${env.BUILD_URL}"
+			}
+            	
+            }
+        }
+        
+        stage('Installation') {
+            steps {
+                bat "mvn install"
             }
         }
     }
@@ -43,29 +60,6 @@ pipeline {
         success {
             echo "Les tests ont bien été validé, on peut déployer en production"   
         }
-        
-        failure {
-            echo "Echec"
-            mail to: "enseignant.formateur@protonmail.com",
-                subject: "Echec pipeline : ${currentBuild.fullDisplayName}",
-               body: "Erreur dans le build : ${env.BUILD_URL}"
-        }
+
     }
 }
-Footer
-© 2022 GitHub, Inc.
-Footer navigation
-
-    Terms
-    Privacy
-    Security
-    Status
-    Docs
-    Contact GitHub
-    Pricing
-    API
-    Training
-    Blog
-    About
-
-SpringTd2/Jenkinsfile at master · Gohtmog/SpringTd2
